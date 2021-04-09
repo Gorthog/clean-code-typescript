@@ -506,6 +506,10 @@ Oftentimes you have duplicate code because you have two or more slightly differe
 
 Getting the abstraction right is critical, that's why you should follow the [SOLID](#solid) principles. Bad abstractions can be worse than duplicate code, so be careful! Having said this, if you can make a good abstraction, do it! Don't repeat yourself, otherwise, you'll find yourself updating multiple places anytime you want to change one thing.
 
+However, you should be critical about code duplication. Sometimes there is a tradeoff between duplicated code and increased complexity by introducing unnecessary abstraction. When two implementations from two different modules look similar but live in different domains, duplication might be acceptable and preferred over extracting the common code. The extracted common code, in this case, introduces an indirect dependency between the two modules.
+
+Sometimes, code seems to be duplicate while it's actually two distinct different use cases that over time they will diverge signficantly. When you think that is the case, leave the two duplication to exist, but if you spot a third duplication - that's the time to refactor.
+
 **Bad:**
 
 ```ts
@@ -580,8 +584,6 @@ function showEmployeeList(employee: Developer | Manager) {
 }
 ```
 
-You should be critical about code duplication. Sometimes there is a tradeoff between duplicated code and increased complexity by introducing unnecessary abstraction. When two implementations from two different modules look similar but live in different domains, duplication might be acceptable and preferred over extracting the common code. The extracted common code, in this case, introduces an indirect dependency between the two modules.
-
 **[⬆ back to top](#table-of-contents)**
 
 ### Set default objects with Object.assign or destructuring
@@ -636,37 +638,6 @@ createMenu({ body: 'Bar' });
 
 To avoid any side effects and unexpected behavior by passing in explicitly the `undefined` or `null` value, you can tell the TypeScript compiler to not allow it.
 See [`--strictNullChecks`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#--strictnullchecks) option in TypeScript.
-
-**[⬆ back to top](#table-of-contents)**
-
-### Don't use flags as function parameters
-
-Flags tell your user that this function does more than one thing.
-Functions should do one thing. Split out your functions if they are following different code paths based on a boolean.
-
-**Bad:**
-
-```ts
-function createFile(name: string, temp: boolean) {
-  if (temp) {
-    fs.create(`./temp/${name}`);
-  } else {
-    fs.create(name);
-  }
-}
-```
-
-**Good:**
-
-```ts
-function createTempFile(name: string) {
-  createFile(`./temp/${name}`);
-}
-
-function createFile(name: string) {
-  fs.create(name);
-}
-```
 
 **[⬆ back to top](#table-of-contents)**
 
