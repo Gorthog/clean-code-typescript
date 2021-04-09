@@ -2488,23 +2488,7 @@ try {
 
 Formatting is subjective. Like many rules herein, there is no hard and fast rule that you must follow. The main point is *DO NOT ARGUE* over formatting. There are tons of tools to automate this. Use one! It's a waste of time and money for engineers to argue over formatting. The general rule to follow is *keep consistent formatting rules*.  
 
-For TypeScript there is a powerful tool called [TSLint](https://palantir.github.io/tslint/). It's a static analysis tool that can help you improve dramatically the readability and maintainability of your code. There are ready to use TSLint configurations that you can reference in your projects:
-
-- [TSLint Config Standard](https://www.npmjs.com/package/tslint-config-standard) - standard style rules
-
-- [TSLint Config Airbnb](https://www.npmjs.com/package/tslint-config-airbnb) - Airbnb style guide
-
-- [TSLint Clean Code](https://www.npmjs.com/package/tslint-clean-code) - TSLint rules inspired by the [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.amazon.ca/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
-
-- [TSLint react](https://www.npmjs.com/package/tslint-react) - lint rules related to React & JSX
-
-- [TSLint + Prettier](https://www.npmjs.com/package/tslint-config-prettier) - lint rules for [Prettier](https://github.com/prettier/prettier) code formatter
-
-- [ESLint rules for TSLint](https://www.npmjs.com/package/tslint-eslint-rules) - ESLint rules for TypeScript
-
-- [Immutable](https://www.npmjs.com/package/tslint-immutable) - rules to disable mutation in TypeScript
-
-Refer also to this great [TypeScript StyleGuide and Coding Conventions](https://basarat.gitbook.io/typescript/styleguide) source.
+Use default prettier configuration and set auto format on save via vscode.
 
 ### Use consistent capitalization
 
@@ -2640,53 +2624,12 @@ review.review();
 
 With clean and easy to read import statements you can quickly see the dependencies of current code. Make sure you apply following good practices for `import` statements:
 
-- Import statements should be alphabetized and grouped.
 - Unused imports should be removed.
-- Named imports must be alphabetized (i.e. `import {A, B, C} from 'foo';`)
-- Import sources must be alphabetized within groups, i.e.: `import * as foo from 'a'; import * as bar from 'b';`
-- Groups of imports are delineated by blank lines.
-- Groups must respect following order:
-  - Polyfills (i.e. `import 'reflect-metadata';`)
-  - Node builtin modules (i.e. `import fs from 'fs';`)
-  - external modules (i.e. `import { query } from 'itiriri';`)
-  - internal modules (i.e `import { UserService } from 'src/services/userService';`)
-  - modules from a parent directory (i.e. `import foo from '../foo'; import qux from '../../foo/qux';`)
-  - modules from the same or a sibling's directory (i.e. `import bar from './bar'; import baz from './bar/baz';`)
-
-**Bad:**
-
-```ts
-import { TypeDefinition } from '../types/typeDefinition';
-import { AttributeTypes } from '../model/attribute';
-import { ApiCredentials, Adapters } from './common/api/authorization';
-import fs from 'fs';
-import { ConfigPlugin } from './plugins/config/configPlugin';
-import { BindingScopeEnum, Container } from 'inversify';
-import 'reflect-metadata';
-```
-
-**Good:**
-
-```ts
-import 'reflect-metadata';
-
-import fs from 'fs';
-import { BindingScopeEnum, Container } from 'inversify';
-
-import { AttributeTypes } from '../model/attribute';
-import { TypeDefinition } from '../types/typeDefinition';
-
-import { ApiCredentials, Adapters } from './common/api/authorization';
-import { ConfigPlugin } from './plugins/config/configPlugin';
-```
-
-**[⬆ back to top](#table-of-contents)**
-
-### Use typescript aliases
+- use typescript aliases
 
 Create prettier imports by defining the paths and baseUrl properties in the compilerOptions section in the `tsconfig.json`
 
-This will avoid long relative paths when doing imports.
+This will avoid long relative paths when doing imports, also it prevents mistakes when computing the relative paths from different paths in the code.
 
 **Bad:**
 
@@ -2726,6 +2669,13 @@ The use of a comments is an indication of failure to express without them. Code 
 ### Prefer self explanatory code instead of comments
 
 Comments are an apology, not a requirement. Good code *mostly* documents itself.
+If you add a clarification comment, this usually means your code smells. 
+
+Some comments are necessary. Here are several guidelines:
+* side effects, workarounds and TODOs.
+* It's good to add context when it cannot be inferred from the actual code.
+* Warn when other "obvious" solutions were already tried and failed. Explain which was tried and why it failed.
+* Good comments should describe *why* code does something, not *what* it does.
 
 **Bad:**
 
